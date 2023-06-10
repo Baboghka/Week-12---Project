@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Book Library</title>
+   <link rel ='stylesheet' href='node_modules/bootstrap/dist/css/bootstrap.css'>
+  <style>
+
+.body{
+background-color: lightcyan;
+    
+}
+   .container {
+      max-width: 600px;
+      margin: 0 auto;
+      padding: 20px;
+      margin-top: 50px;
+      background-color:lightgoldenrodyellow
+    }
+
+    h1 {
+      margin-bottom: 30px;
+      color:rgb(128, 198, 222);
+    }
+
+    .table {
+      margin-top: 20px;
+    }
+
+    .form-group {
+      margin-bottom: 20px;
+    }
+
+    .btn-primary {
+      margin-right: 10px;
+    }
+
+    .btn-danger {
+      margin-left: 5px;
+    }
+
+    #book-list {
+      margin-top: 20px;
+    }
+
+    .book-item {
+      margin-bottom: 10px;
+      padding: 10px;
+      background-color:rgb(207, 228, 235)
+    }
+
+    .book-item button {
+      margin-left: 10px;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Book Library</h1>
+    
+    <form id="book-form">
+      <div class="form-group">
+        <label for="title">Title:</label>
+        <input type="text" id="title" class="form-control" required>
+      </div>
+      <div class="form-group">
+        <label for="author">Author:</label>
+        <input type="text" id="author" class="form-control" required>
+      </div>
+      <button type="submit" class="btn btn-primary">Add Book</button>
+     
+    </form>
+    
+    <div id="book-list"></div>
+  </div>
+  
+  <script>
+    // Define the book array to store book entities
+    let books = [];
+
+    // Function to render the book list
+    function renderBookList() {
+      const bookList = document.getElementById("book-list");
+      bookList.innerHTML = "";
+
+      books.forEach((book, index) => {
+        const bookItem = document.createElement("div");
+        bookItem.className = "book-item";
+
+        const title = document.createElement("h3");
+        title.textContent = book.title;
+
+        const author = document.createElement("p");
+        author.textContent = "By: " + book.author;
+
+        const deleteBtn = document.createElement("button");
+        deleteBtn.className = "btn btn-danger btn-sm";
+        deleteBtn.textContent = "Delete";
+        deleteBtn.addEventListener("click", () => deleteBook(index));
+
+        const editBtn = document.createElement("button");
+        editBtn.className = "btn btn-primary btn-sm";
+        editBtn.textContent = "Edit";
+        editBtn.addEventListener("click", () =>showEditForm(index));
+
+
+
+        bookItem.appendChild(title);
+        bookItem.appendChild(author);
+        bookItem.appendChild(deleteBtn);
+        bookItem.appendChild(editBtn);
+        bookList.appendChild(bookItem);
+      });
+    }
+
+    // Function to add a new book
+    function addBook(event) {
+      event.preventDefault();
+
+      const titleInput = document.getElementById("title");
+      const authorInput = document.getElementById("author");
+
+      const title = titleInput.value;
+      const author = authorInput.value;
+
+      if (title && author) {
+        const newBook = {
+          title,
+          author
+        
+    };
+
+        books.push(newBook);
+
+        titleInput.value = "";
+        authorInput.value = "";
+
+        renderBookList();
+      }
+    
+
+    // Function to delete a book
+    function deleteBook(index) {
+      books.splice(index, 1);
+      renderBookList();
+    }
+
+    // Add event listener to the form
+    const bookForm = document.getElementById("book-form");
+    bookForm.addEventListener("submit", addBook);
+ books.push(newBook);
+
+        titleInput.value = "";
+        authorInput.value = "";
+
+        renderBookList();
+      }
+    
+
+    // Function to delete a book
+    function deleteBook(index) {
+      books.splice(index, 1);
+      renderBookList();
+    }
+
+    // Add event listener to the form
+    const bookForm = document.getElementById("book-form");
+    bookForm.addEventListener("submit", addBook);
+
+function showEditForm(index) {
+  const book = books[index];
+
+  const editForm = document.createElement("form");
+
+  const titleInput = document.createElement("input");
+  titleInput.type = "text";
+  titleInput.className = "form-control";
+  titleInput.value = book.title;
+
+  const authorInput = document.createElement("input");
+  authorInput.type = "text";
+  authorInput.className = "form-control";
+  authorInput.value = book.author;
+
+  const saveBtn = document.createElement("button");
+  saveBtn.type = "submit";
+  saveBtn.className = "btn btn-primary";
+  saveBtn.textContent = "Save";
+
+  editForm.appendChild(titleInput);
+  editForm.appendChild(authorInput);
+  editForm.appendChild(saveBtn);
+
+  // Update book details on form submission
+  editForm.addEventListener("submit", (event) => {
+    event.preventDefault();
+    const updatedTitle = titleInput.value;
+    const updatedAuthor = authorInput.value;
+
+    if (updatedTitle && updatedAuthor) {
+      books[index].title = updatedTitle;
+      books[index].author = updatedAuthor;
+      renderBookList();
+    }
+  });
+
+  const bookList = document.getElementById("book-list");
+  bookList.replaceChild(editForm, bookList.children[index]);
+}
+
+  </script>
+</body>
+</html>

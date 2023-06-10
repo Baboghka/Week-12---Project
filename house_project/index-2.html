@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>CRUD Application</title> 
+   <link rel ='stylesheet' href='node_modules/bootstrap/dist/css/bootstrap.css'>
+  <style>
+    /*  CSS styles here */
+    .body{
+background-color: rgb(75, 115, 150);
+    }
+   .container {
+      margin-top: 50px;
+      background-color: antiquewhite;
+    }
+
+    h1 {
+      margin-bottom: 30px;
+      color: rgb(102, 183, 210);
+    }
+
+    .table {
+      margin-top: 20px;
+    }
+
+    .form-group {
+      margin-bottom: 20px;
+    }
+
+    .btn-primary {
+      margin-right: 10px;
+    }
+
+    .btn-danger {
+      margin-left: 5px;
+    }
+
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>CRUD Application</h1>
+    
+    <!-- Entity Form -->
+    <form id="entityForm">
+      <div class="form-group">
+        <label for="name">Name</label>
+        <input type="text" class="form-control" id="name" placeholder="Enter name" required>
+      </div>
+      <button type="submit" class="btn btn-primary">Add Entity</button>
+    </form>
+    
+    <!-- Entity List -->
+    <table class="table mt-4">
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody id="entityList">
+        <!-- Entities will be dynamically added here -->
+      </tbody>
+    </table>
+  </div>
+<script src="https://code.jquery.com/jquery-3.7.0.min.js"></script>
+  <script>
+    $(document).ready(function() {
+      // Array to store entities
+      var entities = [];
+
+      // Function to add a new entity
+      function addEntity(name) {
+        var entity = { name: name };
+        entities.push(entity);
+      }
+
+      // Function to delete an entity
+      function deleteEntity(index) {
+        entities.splice(index, 1);
+      }
+
+      // Function to render the entity list
+
+      function renderEntityList() {
+        var html = '';
+        entities.forEach(function(entity, index) {
+          html += '<tr>';
+          html += '<td>' + entity.name + '</td>';
+          html += '<td>';
+    html+='<button class="btn btn-sm btn-primary edit"data-index="' + index +'">Edit</button>';
+   html+='<button class="btn btn-sm btn-danger delete"data-index="'+ index +'">Delete</button>';
+     
+          html += '</td>';
+          html += '</tr>';
+        });
+        $('#entityList').html(html);
+      }
+
+     
+
+      // Event handler for form submission
+      $('#entityForm').submit(function(event) {
+        event.preventDefault();
+        var name = $('#name').val();
+        addEntity(name);
+        renderEntityList();
+        $('#name').val('');
+      });
+
+      // Event handler for delete button
+      $(document).on('click', '.delete', function() {
+        var index = $(this).data('index');
+        deleteEntity(index);
+        renderEntityList();
+      });
+
+      // Initial rendering of the entity list
+      renderEntityList();
+    });
+  </script>
+</body>
+</html>
